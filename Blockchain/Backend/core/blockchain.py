@@ -5,7 +5,8 @@ Any violations may lead to legal action
 """
 import sys
 
-sys.path.append("/Users/Vmaha/Desktop/Bitcoin")
+# sys.path.append("/Users/Vmaha/Desktop/Bitcoin")
+sys.path.append("/content")
 
 import copy
 import configparser
