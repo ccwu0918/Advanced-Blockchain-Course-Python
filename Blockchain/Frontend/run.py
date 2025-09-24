@@ -3,6 +3,10 @@ Copyright (c) 2021 Codiesalert.com
 These scripts should be used for commercial purpose without Codies Alert Permission
 Any violations may lead to legal action
 """
+import sys
+sys.path.append("/content")
+
+from pyngrok import ngrok
 from flask import Flask, render_template, request, redirect, url_for
 from Blockchain.client.sendBTC import SendBTC
 from Blockchain.Backend.core.Tx import Tx
@@ -12,6 +16,9 @@ from Blockchain.Backend.core.network.syncManager import syncManager
 from hashlib import sha256
 from multiprocessing import Process
 from flask_qrcode import QRcode
+
+port = 5900
+public_url = ""
 
 app = Flask(__name__)
 qrcode = QRcode(app)
@@ -219,6 +226,11 @@ def broadcastTx(TxObj, localHostPort = None):
         pass
 
 def main(utxos, MemPool, port, localPort):
+  try:
+      
+    public_url = ngrok.connect(port).public_url    
+    print(public_url)        
+      
     global UTXOS
     global MEMPOOL
     global localHostPort 
@@ -226,3 +238,5 @@ def main(utxos, MemPool, port, localPort):
     MEMPOOL = MemPool
     localHostPort = localPort
     app.run(port = port)
+  finally:
+    ngrok.disconnect(public_url=public_url)  
